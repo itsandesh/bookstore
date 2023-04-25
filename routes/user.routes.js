@@ -4,8 +4,8 @@ const router = require('express').Router()
 const userController = require('../app/Controllers/user.controllers')
 
 router.route("/")
-.get(userController.listUsers)
-.post(userController.createUser)
+    .get(userController.listUsers)
+    .post(userController.createUser)
 
 router.route("/:id")
     .get(userController.getUserDetail)

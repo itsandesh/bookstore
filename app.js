@@ -3,10 +3,16 @@ const app = express();
 
 const routes = require("./routes")
 const logger = require("./app/middleware/logger.middleware");
+const e = require("express");
+
+app.use(express.json())
+
+app.use(express.urlencoded({
+    extended: false
+}))
+
 
 app.use("/api/v1", logger, routes)
-
-
 
 app.use((req, res, next) => {
     next({ status: 404, msg: 'Resourse Not FOund' });
@@ -16,7 +22,7 @@ app.use((req, res, next) => {
 app.use((error, req, res, next) => {
     res.status(error.status).json({
         result: null,
-        msg: error.msg ,
+        msg: error.msg,
         status: false,
         meta: null
     })
