@@ -15,9 +15,6 @@ class AuthController {
                 neta: null
             })
         } catch (err) {
-            if (err?.details) {
-                err = err?.details?.[0].message;
-            }
             next({ status: 400, msg: err })
         }
     }
