@@ -1,5 +1,5 @@
 const userService = require("../services/user.service");
-
+const bcrypt = require('bcrypt')
 class AuthController {
 
     registerProcess = async (req, res, next) => {
@@ -8,10 +8,12 @@ class AuthController {
             let payload = req.body;
 
             if (req.file) {
-                    payload.image= req.file.filename;
+                payload.image = req.file.filename;
             }
             //validation
             let validateData = await userService.validateUser(payload);
+
+            validateData.password = await bcrypt.hash(validateData.password, 10);
             res.json({
                 result: validateData,
                 status: true,

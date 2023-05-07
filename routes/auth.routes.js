@@ -4,7 +4,12 @@ const uploader = require("../app/middleware/uploader.middlerware")
 
 const authController = require('../app/Controllers/auth.controllers')
 
-router.post('/register', uploader.single("image"), authController.registerProcess)
+const makeDir = (req, res, next) => {
+    req.dirPath = './public/uploads/category';
+    next()
+}
+
+router.post('/register', makeDir, uploader.single("image"), authController.registerProcess)
 
 router.post('/login', authController.loginProcess);
 

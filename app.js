@@ -1,9 +1,9 @@
 const express = require("express");
 const app = express();
-
 const routes = require("./routes")
 const logger = require("./app/middleware/logger.middleware");
-const e = require("express");
+
+
 const { MulterError } = require("multer");
 
 app.use(express.json())
@@ -20,7 +20,9 @@ app.use((req, res, next) => {
 })
 
 //error handling middleware
+
 app.use((error, req, res, next) => {
+    console.log(error);
     //multer eror handling
     let status = error.status || 400;
     let msg = error.msg
