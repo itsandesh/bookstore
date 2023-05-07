@@ -1,5 +1,6 @@
 const userService = require("../services/user.service");
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
 class AuthController {
 
     registerProcess = async (req, res, next) => {
@@ -26,8 +27,26 @@ class AuthController {
     }
 
     loginProcess = (req, res, next) => {
+        let detail = {
+            _id: 123,
+            name: "Sandesh Khanal",
+            email: "sandesh@gmail.com",
+            password: "$2b$10$ihtaEw1zOIZFZ1UD4DtueOLu4tq8bjefEy3JV59p6yYoGAX0aJlxu",
+            role: [
+                "admin"
+            ],
+            status: "active",
+            address: "kathmandu",
+            phone: "+977 9874561230",
+            image: "1683464043751-IMG-4245.JPG"
+        };
+        let token = jwt.sign({ userId: detail._id }, "sandesh123");
         res.json({
-            result: null,
+            result: {
+                detail: detail,
+                token: token
+
+            },
             status: true,
             msg: "Login Process",
             neta: null

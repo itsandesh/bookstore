@@ -1,13 +1,16 @@
 class CategoryController {
 
     createCategory = (req, res, next) => {
+
         res.json({
             result: null,
             status: true,
-            msg: "you are creating a categiry ",
+            msg: "you are creating a category ",
             meta: null
         })
+
     }
+
     listCategories = (req, res, next) => {
 
     }
