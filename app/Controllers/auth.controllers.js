@@ -1,6 +1,8 @@
 const userService = require("../services/user.service");
 const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
+const AppConstants = require("../../config/constants");
+
 class AuthController {
 
     registerProcess = async (req, res, next) => {
@@ -27,11 +29,12 @@ class AuthController {
     }
 
     loginProcess = (req, res, next) => {
+        let data = req.body;
         let detail = {
             _id: 123,
             name: "Sandesh Khanal",
             email: "sandesh@gmail.com",
-            password: "$2b$10$ihtaEw1zOIZFZ1UD4DtueOLu4tq8bjefEy3JV59p6yYoGAX0aJlxu",
+            password: "$2b$10$AqhUP0wfXm5sr25wu5O2.Oi1acCnyNttxai0ViI.6QKe.BotTPORO",
             role: [
                 "admin"
             ],
@@ -40,26 +43,37 @@ class AuthController {
             phone: "+977 9874561230",
             image: "1683464043751-IMG-4245.JPG"
         };
-        let token = jwt.sign({ userId: detail._id }, "sandesh123");
-        res.json({
-            result: {
-                detail: detail,
-                token: token
+        if (bcrypt.compareSync(data.password, detail.password)) {
+            let token = jwt.sign({ userId: detail._id }, AppConstants.JWT_SECRET);
+            res.json({
+                result: {
+                    detail: detail,
+                    token: token
 
-            },
-            status: true,
-            msg: "Login Process",
-            neta: null
-        })
+                },
+                status: true,
+                msg: "Login Process",
+                neta: null
+            })
+        } else {
+            next({
+                status: 400, msg: "Password does not match "
+            })
+        }
     }
     changePasswordProcess = (req, res, next) => {
 
     }
     LoggedInProfile = (req, res, next) => {
 
+        res.json({
+            result: req.authUser,
+            status: true,
+            msg: "Your profile data ",
+            meta: null
+        })
+
     }
-
-
 }
 
 const authController = new AuthController;

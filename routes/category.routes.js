@@ -1,21 +1,12 @@
 const categoryController = require('../app/Controllers/category.controllers')
 const router = require("express").Router()
+const authCheck = require("../app/middleware/auth.middleware")
+const { isAdmin } = require("../app/middleware/rbac.middleware")
 
-const authCheck = (req, res, next) => {
-    console.log("makadocs");
-    res.json({
-        result: req.headers,
-        status: true,
-        msg: "I am a Auth Check middleware",
-        meta: null
-
-    })
-}
 // router.post("/", authCheck, categoryController.createCategory);
-
 router.route("/")
     .get(categoryController.listCategories)
-    .post(authCheck, categoryController.createCategory)
+    .post(authCheck, isAdmin, categoryController.createCategory)
 
 router.route("/:id")
     .get(categoryController.getCategoryDetail)
