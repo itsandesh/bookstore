@@ -31,7 +31,9 @@ class UserService {
                         .default('inactive'),
 
                     phone: Joi.string()
-                        .min(10)
+                        .min(10),
+                    
+                    image: Joi.string().empty( )
 
                     // repeat_password: Joi.ref('password'),
 

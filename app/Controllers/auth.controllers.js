@@ -4,8 +4,12 @@ class AuthController {
 
     registerProcess = async (req, res, next) => {
         try {
+
             let payload = req.body;
 
+            if (req.file) {
+                    payload.image= req.file.filename;
+            }
             //validation
             let validateData = await userService.validateUser(payload);
             res.json({

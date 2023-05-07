@@ -4,6 +4,7 @@ const app = express();
 const routes = require("./routes")
 const logger = require("./app/middleware/logger.middleware");
 const e = require("express");
+const { MulterError } = require("multer");
 
 app.use(express.json())
 
@@ -20,9 +21,20 @@ app.use((req, res, next) => {
 
 //error handling middleware
 app.use((error, req, res, next) => {
-    res.status(error.status).json({
+    //multer eror handling
+    let status = error.status || 400;
+    let msg = error.msg
+
+    if (error instanceof MulterError) {
+        if (error.code === 'LIMIT_FILE_SIZE') {
+            msg = "File should be sess than 3 MB "
+
+        }
+        console.log("here");
+    }
+    res.status(status).json({
         result: null,
-        msg: error.msg,
+        msg: msg,
         status: false,
         meta: null
     })
