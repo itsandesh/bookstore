@@ -3,18 +3,16 @@ const app = express();
 const routes = require("./routes")
 const logger = require("./app/middleware/logger.middleware");
 
-
 const { MulterError } = require("multer");
 
-app.use(express.json())
+app.use('/assets', express.static(process.cwd() + '/public'))
+app.use('/images', express.static(process.cwd() + '/public/uploads'))
 
+app.use(express.json())
 app.use(express.urlencoded({
     extended: false
 }))
-
-
 app.use("/api/v1", logger, routes)
-
 app.use((req, res, next) => {
     next({ status: 404, msg: 'Resourse Not FOund' });
 })

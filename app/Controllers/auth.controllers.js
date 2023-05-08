@@ -2,7 +2,8 @@ const userService = require("../services/user.service");
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken');
 const AppConstants = require("../../config/constants");
-
+const nodemailer = require('nodemailer');
+const sendEmail = require("../services/mail.service");
 class AuthController {
 
     registerProcess = async (req, res, next) => {
@@ -17,6 +18,16 @@ class AuthController {
             let validateData = await userService.validateUser(payload);
 
             validateData.password = await bcrypt.hash(validateData.password, 10);
+
+
+            sendEmail({
+                from: "noreply@test.com",
+                to: payload.email,
+                subject: "Account Registered!",
+                textMessage: "Dear user your accound has been registered",
+                htmlMessage: `<p><strong>Congratulations your account has been registered</strong></p>`,
+            })
+
             res.json({
                 result: validateData,
                 status: true,
@@ -28,7 +39,7 @@ class AuthController {
         }
     }
 
-    loginProcess = (req, res, next) => {
+    loginProcess = async (req, res, next) => {
         let data = req.body;
         let detail = {
             _id: 123,
@@ -45,8 +56,15 @@ class AuthController {
         };
         if (bcrypt.compareSync(data.password, detail.password)) {
             let token = jwt.sign({ userId: detail._id }, AppConstants.JWT_SECRET);
+            await sendEmail({
+                from: "noreply@test.com",
+                to: detail.email,
+                subject: "OTP CODE",
+                textMessage: "Your OTP code is 1234",
+                htmlMessage: `<p><strong>OTP CODE IS 1234</strong></p>`,
+            })
             res.json({
-                result: {
+                result: {  
                     detail: detail,
                     token: token
 

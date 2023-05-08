@@ -1,10 +1,10 @@
 const jwt = require("jsonwebtoken");
 const AppConstants = require("../../config/constants");
+const nodemailer = require('nodemailer')
+
 const authCheck = (req, res, next) => {
     try {
-
         let token = null;
-
         if (req.headers['authorization']) {
             token = req.headers['authorization'];
         } else if (req.headers['x-xsrf-token']) {
