@@ -1,7 +1,9 @@
 const Joi = require("joi")
-class UserService {
+const MongoDBService = require("./mongo.service")
+class UserService extends MongoDBService{
 
     validateUser = async (data) => {
+        
         try {
             if ((Object.keys(data)).length == 0) {
                 throw "Empty payload"
@@ -49,6 +51,18 @@ class UserService {
             }
             throw err;
         }
+    }
+
+    registerUser = async (data) => {
+        try{
+
+            let response = await this.db.collection('users').insertOne(data);   
+            return response
+
+        }catch(err){
+            throw err;
+        }
+        
     }
 
 }

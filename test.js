@@ -1,33 +1,17 @@
-const jwt = require("jsonwebtoken");
-const AppConstants = require("../../config/constants");
+sendEmail({
+    from: "noreply@test.com",
+    to: payload.email,
+    subject: "Account Registered!",
+    textMessage: "Dear user your accound has been registered",
+    htmlMessage: `<p><strong>Congratulations your account has been registered</strong></p>`,
+})
 
-const authCheck = (req, res, next) => {
+res.json({
+    result: result,
+    status: true,
+    msg: "Your account has been registered",
+    neta: null
+})
 
-    let token = null;
 
-    if (req.headers['authorization']) {
-        token = req.headers['authorization'];
-    } else if (req.headers['x-xsrf-token']) {
-        token = req.headers['x-xsrf-token'];
-    } else if (req.query['token']) {
-        token = req.query['token']
-    }
 
-    if (!token) {
-        next({ status: 401, 
-            msg: "Unauthorized access"
-         })
-    }
-
-    token = (token.split("")).pop();   // token
-    if (!token || token == 'null') {
-        next({ status: 401, msg: "Invalid token" })
-    }
-
-    // token valid 
-    let data = jwt.verify(token, AppConstants.JWT_SECRET);
-    console.log(data);
-
-}
-
-module.exports = authCheck

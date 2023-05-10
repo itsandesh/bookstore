@@ -22,35 +22,24 @@ class AuthController {
 
             console.log("I an here");
 
-            MongoClient.connect(dbUrl)
-                .then((client) => {
-                    let db = client.db("bookstore")
-                    db.collection('users').insertOne(validatedData)
-                        .then((result) => {
-                            sendEmail({
-                                from: "noreply@test.com",
-                                to: payload.email,
-                                subject: "Account Registered!",
-                                textMessage: "Dear user your accound has been registered",
-                                htmlMessage: `<p><strong>Congratulations your account has been registered</strong></p>`,
-                            })
+           //store data 
 
-                            res.json({
-                                result: result,
-                                status: true,
-                                msg: "Your account has been registered",
-                                neta: null
-                            })
+           let response = await userService.registerUser(validatedData)
 
-                        })
-                        .catch((err) => {
-                            console.log("InsertQuery", err);
-                            next({ status: 400, msg: err })
-                        })
-                })
-                .catch((err) => {
-                    console.log("Error establishing the connection ", err);
-                })
+           sendEmail({
+            from: "noreply@test.com",
+            to: payload.email,
+            subject: "Account Registered!",
+            textMessage: "Dear user your accound has been registered",
+            htmlMessage: `<p><strong>Congratulations your account has been registered</strong></p>`,
+        })
+        
+        res.json({
+            result: response,
+            status: true,
+            msg: "Your account has been registered",
+            neta: null
+        })
 
 
 
@@ -61,19 +50,23 @@ class AuthController {
 
     loginProcess = async (req, res, next) => {
         let data = req.body;
-        let detail = {
-            _id: 123,
-            name: "Sandesh Khanal",
-            email: "sandesh@gmail.com",
-            password: "$2b$10$AqhUP0wfXm5sr25wu5O2.Oi1acCnyNttxai0ViI.6QKe.BotTPORO",
-            role: [
-                "admin"
-            ],
-            status: "active",
-            address: "kathmandu",
-            phone: "+977 9874561230",
-            image: "1683464043751-IMG-4245.JPG"
-        };
+        // let detail = {
+        //     _id: 123,
+        //     name: "Sandesh Khanal",
+        //     email: "sandesh@gmail.com",
+        //     password: "$2b$10$AqhUP0wfXm5sr25wu5O2.Oi1acCnyNttxai0ViI.6QKe.BotTPORO",
+        //     role: [
+        //         "admin"
+        //     ],
+        //     status: "active",
+        //     address: "kathmandu",
+        //     phone: "+977 9874561230",
+        //     image: "1683464043751-IMG-4245.JPG"
+        // };
+
+        let client = await MongoClient.connect(dbUrl)
+        let db = client.db("bookstore")
+        let detail = db.collection('users').findOne({ email: data.email })
 
         if (bcrypt.compareSync(data.password, detail.password)) {
             let token = jwt.sign({ userId: detail._id }, AppConstants.JWT_SECRET);
