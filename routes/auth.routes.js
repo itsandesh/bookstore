@@ -4,7 +4,7 @@ const authController = require('../app/Controllers/auth.controllers');
 const authCheck = require('../app/middleware/auth.middleware');
 
 const makeDir = (req, res, next) => {
-    req.dirPath = './public/uploads/category';
+    req.dirPath = './public/uploads/user';
     next()
 }
 

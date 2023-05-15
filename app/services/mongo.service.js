@@ -15,6 +15,14 @@ class MongoDBService {
             throw ("DB COnnection error", err);
         }
     }
+    addSingleRow = async (collectionName, data) => {
+        try {
+          return await  this.db.collectin(collectionName).insertOne(data)
+        } catch (err) {
+            throw "Insertion error"
+        }
+
+    }
 }
 
 module.exports = MongoDBService

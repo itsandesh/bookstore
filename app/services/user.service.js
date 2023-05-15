@@ -1,9 +1,10 @@
 const Joi = require("joi")
 const MongoDBService = require("./mongo.service")
-class UserService extends MongoDBService{
+const UserModel = require("../model/user.model")
+class UserService extends MongoDBService {
 
     validateUser = async (data) => {
-        
+
         try {
             if ((Object.keys(data)).length == 0) {
                 throw "Empty payload"
@@ -24,9 +25,7 @@ class UserService extends MongoDBService{
 
                     address: Joi.string(),
 
-                    role: Joi.array().items(
-                        Joi.string().valid("admin", "suppliar", "customer")
-                    ),
+                    role: Joi.string().allow("admin", "suppliar", "customer").default('customer'),
 
                     status: Joi.string()
                         .allow("active", "inactive")
@@ -34,8 +33,8 @@ class UserService extends MongoDBService{
 
                     phone: Joi.string()
                         .min(10),
-                    
-                    image: Joi.string().empty( )
+
+                    image: Joi.string().empty()
 
                     // repeat_password: Joi.ref('password'),
 
@@ -54,15 +53,29 @@ class UserService extends MongoDBService{
     }
 
     registerUser = async (data) => {
-        try{
+        try {
 
-            let response = await this.db.collection('users').insertOne(data);   
-            return response
+            // let response = await this.db.collection('users').insertOne(data);
+            let user = new UserModel(data)
+            return await user.save() //this is the insert query like .insertOne
 
-        }catch(err){
+            //    let response = await this.addSingleRow('users', data);
+
+        } catch (err) {
             throw err;
         }
-        
+    }
+    getUserByEmail = async (email) => {
+        try {
+            let UseDetail = await this.db.collection('users').findOne({
+                email: email
+            });
+            return UseDetail
+
+
+        } catch (err) {
+            throw "getUserByEmail", +err;
+        }
     }
 
 }

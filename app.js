@@ -2,7 +2,8 @@ const express = require("express");
 const app = express();
 const routes = require("./routes")
 const logger = require("./app/middleware/logger.middleware");
-
+//database connection
+require("./config/db.config")
 const { MulterError } = require("multer");
 
 app.use('/assets', express.static(process.cwd() + '/public'))
