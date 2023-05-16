@@ -14,4 +14,6 @@ router.post('/login', authController.loginProcess);
 
 router.get("/my-profile", authCheck, authController.LoggedInProfile);
 
+router.put("/change-password",authCheck, authController.changePasswordProcess);
+
 module.exports = router;

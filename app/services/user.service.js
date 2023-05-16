@@ -67,14 +67,32 @@ class UserService extends MongoDBService {
     }
     getUserByEmail = async (email) => {
         try {
-            let UseDetail = await this.db.collection('users').findOne({
+            let UserDetail = await this.db.collection('users').findOne({
                 email: email
             });
-            return UseDetail
+            return UserDetail
 
 
         } catch (err) {
             throw "getUserByEmail", +err;
+        }
+    }
+    getUserById = async (UserId) => {
+        try {
+            let UserDetail = await UserModel.findById(UserId, {password:0 }); //first parameter is ID and second parameter is Projection
+            return UserDetail;
+
+        } catch (err) {
+            throw "UserDetailById", err;
+        }
+    }
+    updateUserById =async(id, data )=>{
+        try{
+            let response = await UserModel.findByIdAndUpdate(id,{$set:data})
+            return response
+
+        }catch(err){
+            throw "update User error :"+ err;
         }
     }
 

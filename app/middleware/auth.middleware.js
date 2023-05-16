@@ -1,8 +1,9 @@
 const jwt = require("jsonwebtoken");
 const AppConstants = require("../../config/constants");
-const nodemailer = require('nodemailer')
+const nodemailer = require('nodemailer');
+const userService = require("../services/user.service");
 
-const authCheck = (req, res, next) => {
+const authCheck = async (req, res, next) => {
     try {
         let token = null;
         if (req.headers['authorization']) {
@@ -31,19 +32,8 @@ const authCheck = (req, res, next) => {
         let data = jwt.verify(token, AppConstants.JWT_SECRET)
 
 
-        let user = {
-            _id: 123,
-            name: "Sandesh Khanal",
-            email: "sandesh@gmail.com",
-            password: "$2b$10$AqhUP0wfXm5sr25wu5O2.Oi1acCnyNttxai0ViI.6QKe.BotTPORO",
-            role: [
-                "admin"
-            ],
-            status: "active",
-            address: "kathmandu",
-            phone: "+977 9874561230",
-            image: "1683464043751-IMG-4245.JPG"
-        }
+        let user = await userService.getUserById(data.userId)
+        delete user.password;
 
         if (user) {
             req.authUser = user;

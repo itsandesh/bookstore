@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const AppConstants = require("../../config/constants");
 const nodemailer = require('nodemailer');
 const sendEmail = require("../services/mail.service");
+const { equal } = require("joi");
 
 class AuthController {
 
@@ -90,7 +91,43 @@ class AuthController {
 
         }
     }
-    changePasswordProcess = (req, res, next) => {
+    changePasswordProcess = async (req, res, next) => {
+        try {
+            let payload = req.body;
+            let loggedInUser = req.authUser;
+            let pattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/
+            let toBeChanged = await userService.getUserByEmail(payload.email)
+            if (!toBeChanged) {
+                throw "User Does Not exist "
+            } else if (!toBeChanged._id.equals(loggedInUser._id)) {
+                next({
+                    status: 403,
+                    msg: " you do not have previllage to change the password "
+                })
+            } else if (!pattern.test(payload.password)) {
+                throw "Password must be of 8 characters with at least a Captial letter, a Number , a small letter"
+            } else if (payload.password !== payload.confirmPassword) {
+                throw "Password and confirm password does not match "
+            } else {
+                let encPassword = bcrypt.hashSync(payload.password, 10)
+                let response = await userService.updateUserById(loggedInUser._id, { password: encPassword })
+                res.json({
+                    result:null,
+                    msg:"your password has been changed succesfully",
+                    status:true,
+                    meta:null
+
+
+                })
+
+            }
+
+        } catch (err) {
+            next({
+                status: 400, msg: err
+            })
+
+        }
     }
 
     LoggedInProfile = (req, res, next) => {
