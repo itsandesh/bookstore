@@ -57,6 +57,33 @@ class BannerService {
             throw err;
         }
     }
+    updateBanner = async (id, data) => {
+        try {
+            let response = await BannerModel.findByIdAndUpdate(id, {
+                $set: data
+            })
+            return response
+        } catch (err) {
+            throw err;
+        }
+    }
+    getBannerById = async (id) => {
+        try {
+            let response = await BannerModel.findById(id)
+            return response
+        } catch (err) {
+            throw err;
+        }
+    }
+    deleteById = async (id) => {
+        try {
+            let response = await BannerModel.findByIdAndRemove(id)
+            return response
+        } catch (err) {
+            throw err;
+        }
+    }
+
 
 }
 const bannerService = new BannerService();

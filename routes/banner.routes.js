@@ -16,5 +16,8 @@ router.route("/")
     .get(authCheck, isAdmin, bannerController.listAllBanners)
     .post(authCheck, isAdmin, makeDir, uploader.single('image'), bannerController.createBanner)
 
+router.route("/:id")
+    .put(authCheck,isAdmin,makeDir,uploader.single('image'), bannerController.updateBanner)
+    .delete(authCheck,isAdmin, bannerController.deleteBannerById)
 
 module.exports = router;
