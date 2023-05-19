@@ -1,19 +1,24 @@
-const router = require('express').Router()
+const router = require("express").Router()
 const uploader = require("../app/middleware/uploader.middlerware")
-const authController = require('../app/Controllers/auth.controllers');
-const authCheck = require('../app/middleware/auth.middleware');
+const authController = require("../app/Controllers/auth.controllers")
+const authCheck = require("../app/middleware/auth.middleware")
 
 const makeDir = (req, res, next) => {
-    req.dirPath = './public/uploads/user';
-    next()
+  req.dirPath = "./public/uploads/user"
+  next()
 }
 
-router.post('/register', makeDir, uploader.single("image"), authController.registerProcess)
+router.post(
+  "/register",
+  makeDir,
+  uploader.single("image"),
+  authController.registerProcess
+)
 
-router.post('/login', authController.loginProcess);
+router.post("/login", authController.loginProcess)
 
-router.get("/my-profile", authCheck, authController.LoggedInProfile);
+router.get("/my-profile", authCheck, authController.LoggedInProfile)
 
-router.put("/change-password",authCheck, authController.changePasswordProcess);
+router.put("/change-password", authCheck, authController.changePasswordProcess)
 
-module.exports = router;
+module.exports = router

@@ -1,27 +1,27 @@
-const AppConstants = require("../../config/constants");
-const nodemailer = require('nodemailer')
+const AppConstants = require("../../config/constants")
+const nodemailer = require("nodemailer")
 
-const sendEmail = async (data) => {
-   try{
+const sendEmail = async data => {
+  try {
     const transport = nodemailer.createTransport({
-        host: AppConstants.SMTP.HOST,
-        port: AppConstants.SMTP.PORT,
-        auth: {
-            user: AppConstants.SMTP.USER,
-            pass: AppConstants.SMTP.PASSWORD
-        }
-    });
+      host: AppConstants.SMTP.HOST,
+      port: AppConstants.SMTP.PORT,
+      auth: {
+        user: AppConstants.SMTP.USER,
+        pass: AppConstants.SMTP.PASSWORD,
+      },
+    })
     const emailResponse = await transport.sendMail({
-        from: data.from,
-        to: data.to,
-        subject: data.subject,
-        text: data.textMessage ?? null,
-        html: data.htmlMessage ?? null
+      from: data.from,
+      to: data.to,
+      subject: data.subject,
+      text: data.textMessage ?? null,
+      html: data.htmlMessage ?? null,
     })
     return emailResponse
-   }catch(err){
-   throw err
-   }
+  } catch (err) {
+    throw err
+  }
 }
 
 module.exports = sendEmail

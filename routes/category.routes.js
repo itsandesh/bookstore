@@ -5,19 +5,34 @@ const { isAdmin } = require("../app/middleware/rbac.middleware")
 const uploader = require("../app/middleware/uploader.middlerware")
 
 const makeDir = (req, res, next) => {
-    req.dirPath = './public/uploads/category';
-    next()
+  req.dirPath = "./public/uploads/category"
+  next()
 }
-//frontend routes should be on top 
-//web 
+//frontend routes should be on top
+//web
 router.get("/list", categoryController.ListForHomepage)
 //cms
-router.route("/")
-    .get(authCheck, isAdmin, categoryController.listAllCategory)
-    .post(authCheck, isAdmin, makeDir, uploader.single('image'), categoryController.createCategory)
+router
+  .route("/")
+  .get(authCheck, isAdmin, categoryController.listAllCategory)
 
-router.route("/:id")
-    .put(authCheck,isAdmin,makeDir,uploader.single('image'), categoryController.updateCategory)
-    .delete(authCheck,isAdmin, categoryController.deleteCategoryById)
+  .post(
+    authCheck,
+    isAdmin,
+    makeDir,
+    uploader.single("image"),
+    categoryController.createCategory
+  )
 
-module.exports = router;
+router
+  .route("/:id")
+  .put(
+    authCheck,
+    isAdmin,
+    makeDir,
+    uploader.single("image"),
+    categoryController.updateCategory
+  )
+  .delete(authCheck, isAdmin, categoryController.deleteCategoryById)
+
+module.exports = router
