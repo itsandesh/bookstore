@@ -1,5 +1,8 @@
 const express = require("express")
 const app = express()
+const cors = require("cors")
+
+app.use(cors());
 const routes = require("./routes")
 const logger = require("./app/middleware/logger.middleware")
 //database connection
@@ -17,7 +20,7 @@ app.use(
 )
 app.use("/api/v1", logger, routes)
 app.use((req, res, next) => {
-  next({ status: 404, msg: "Resourse Not FOund" })
+  next({ status: 404, msg: "Resourse Not Found" })
 })
 
 //error handling middleware

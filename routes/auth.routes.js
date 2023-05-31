@@ -10,7 +10,7 @@ const makeDir = (req, res, next) => {
 
 router.post(
   "/register",
-  makeDir,
+   makeDir,
   uploader.single("image"),
   authController.registerProcess
 )

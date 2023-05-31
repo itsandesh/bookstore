@@ -23,7 +23,7 @@ class AuthController {
 
         validatedData.password = await bcrypt.hash(validatedData.password, 10)
 
-        console.log("I an here")
+        console.log("I am in auth ")
 
         //store data
 
@@ -52,7 +52,7 @@ class AuthController {
     try {
       let data = req.body
       let detail = await userService.getUserByEmail(data.email)
-      console.log(detail)
+      // console.log(detail)
 
       if (detail) {
         if (bcrypt.compareSync(data.password, detail.password)) {
@@ -70,7 +70,7 @@ class AuthController {
               token: token,
             },
             status: true,
-            msg: "Login Process",
+            msg: "You are logged In.....",
             neta: null,
           })
         } else {
