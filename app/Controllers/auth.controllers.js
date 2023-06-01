@@ -52,26 +52,25 @@ class AuthController {
     try {
       let data = req.body
       let detail = await userService.getUserByEmail(data.email)
-      // console.log(detail)
 
       if (detail) {
         if (bcrypt.compareSync(data.password, detail.password)) {
           let token = jwt.sign({ userId: detail._id }, AppConstants.JWT_SECRET)
-          await sendEmail({
-            from: "noreply@test.com",
-            to: detail.email,
-            subject: "OTP CODE",
-            textMessage: "Your OTP code is 1234",
-            htmlMessage: `<p><strong>OTP CODE IS 1234</strong></p>`,
-          })
-          res.json({
+          // await sendEmail({
+          //   from: "noreply@test.com",
+          //   to: detail.email,
+          //   subject: "OTP CODE",
+          //   textMessage: "Your OTP code is 1234",
+          //   htmlMessage: `<p><strong>OTP CODE IS 1234</strong></p>`,
+          // })
+          return res.json({
             result: {
               detail: detail,
               token: token,
             },
             status: true,
             msg: "You are logged In.....",
-            neta: null,
+            meta: null,
           })
         } else {
           throw "Password does not match "
