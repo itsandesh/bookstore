@@ -40,7 +40,7 @@ class AuthController {
           result: response,
           status: true,
           msg: "Your account has been registered",
-          neta: null,
+          meta: null,
         })
       }
     } catch (err) {
@@ -123,7 +123,7 @@ class AuthController {
   }
 
   LoggedInProfile = (req, res, next) => {
-    res.json({
+   return res.json({
       result: req.authUser,
       status: true,
       msg: "Your profile data ",
