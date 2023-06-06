@@ -22,7 +22,7 @@ const authCheck = async (req, res, next) => {
 
     // token 
     // token            => ["token"]
-    // Bearer token     => ["Bearer", "null"]
+    // Bearer token     => ["Bearer", "null"]  
     token = (token.split(" ")).pop();   // token
     if (!token || token == 'null') {
       next({ status: 401, msg: "Invalid token" })

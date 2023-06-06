@@ -1,4 +1,4 @@
-const userService = require("../services/user.service")
+const t userService = require("../services/user.service")
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 const AppConstants = require("../../config/constants")
