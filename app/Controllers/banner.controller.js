@@ -16,9 +16,10 @@ class BannerController {
         perPage: Number(perPage),
         currentPage: Number(currentPage),
       }
+      console.log("Total Count:", await bannerService.getCount());
       res.json({
         result: response,
-        msgg: "Banner list successfully",
+        msg: "Banner list successfully",
         status: true,
         meta: meta,
       })

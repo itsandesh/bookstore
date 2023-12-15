@@ -15,12 +15,7 @@ router.get("/list", bannerController.ListForHomepage)
 router
   .route("/")
   .get(authCheck, isAdmin, bannerController.listAllBanners)
-  .post(
-    authCheck,
-    isAdmin,
-    makeDir,
-    uploader.single("image"),
-    bannerController.createBanner
+  .post(authCheck, isAdmin, makeDir, uploader.single("image"), bannerController.createBanner
   )
 
 router
