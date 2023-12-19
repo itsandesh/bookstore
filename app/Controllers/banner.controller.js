@@ -119,7 +119,25 @@ class BannerController {
       })
     }
   }
+  getBannerById = async (req, res, next) => {
+    try {
+      let response = await bannerService.getBannerById(req.params.id)
+      res.json({
+        result: response,
+        msg: "Banner detail",
+        status: true,
+        meta: null,
+      })
+    } catch (err) {
+      console.log(err)
+      next({
+        status: 400,
+        msg: "BannerGetErr" + err,
+      })
+    }
+  }
 }
+
 
 const bannerController = new BannerController()
 module.exports = bannerController

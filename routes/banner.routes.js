@@ -20,13 +20,9 @@ router
 
 router
   .route("/:id")
-  .put(
-    authCheck,
-    isAdmin,
-    makeDir,
-    uploader.single("image"),
-    bannerController.updateBanner
-  )
+  .get(authCheck, isAdmin, bannerController.getBannerById)
+  .put(authCheck, isAdmin, makeDir, uploader.single("image"), bannerController.updateBanner)
   .delete(authCheck, isAdmin, bannerController.deleteBannerById)
+
 
 module.exports = router
