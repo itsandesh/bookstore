@@ -9,10 +9,11 @@ const BookSchemaDef = new mongoose.Schema(
       type: String,
     },
 
-    slug: {
-      type: String,
-      unique: true,
-    },
+    // slug: {
+    //   type: String,
+    //   unique: true,
+    // },
+
     status: {
       type: String,
       enum: ["active", "inactive"],
@@ -29,7 +30,5 @@ const BookSchemaDef = new mongoose.Schema(
     timestamps: true,
   }
 )
-
 const BookModel = mongoose.model("Book", BookSchemaDef)
-
 module.exports = BookModel

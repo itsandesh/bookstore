@@ -142,6 +142,25 @@ class BookController {
       })
     }
   }
+  getBookById = async (req, res, next) => {
+    try {
+      let response = await bookService.getBookById(req.params.id)
+      console.log("Reeesponse",response)
+      
+      res.json({
+        result: response,
+        msg: "Book detail",
+        status: true,
+        meta: null,
+      })
+    } catch (err) {
+      console.log(err)
+      next({
+        status: 400,
+        msg: "BookGetErr" + err,
+      })
+    }
+  }
 }
 
 const bookController = new BookController()

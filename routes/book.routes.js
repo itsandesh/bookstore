@@ -34,5 +34,6 @@ router
     bookController.updateBook
   )
   .delete(authCheck, isAdmin, bookController.deleteBookById)
+  .get(authCheck, isAdmin, bookController.getBookById)
 
 module.exports = router
