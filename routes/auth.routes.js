@@ -3,6 +3,7 @@ const uploader = require("../app/middleware/uploader.middlerware")
 const authController = require("../app/Controllers/auth.controllers")
 const authCheck = require("../app/middleware/auth.middleware")
 
+
 const makeDir = (req, res, next) => {
   req.dirPath = "./public/uploads/user"
   next()
@@ -10,7 +11,7 @@ const makeDir = (req, res, next) => {
 
 router.post(
   "/register",
-   makeDir,
+  makeDir,
   uploader.single("image"),
   authController.registerProcess
 )
@@ -20,5 +21,9 @@ router.post("/login", authController.loginProcess)
 router.get("/my-profile", authCheck, authController.LoggedInProfile)
 
 router.put("/change-password", authCheck, authController.changePasswordProcess)
+
+router.put("/edit-profile/", authCheck, authController.updateProfile)
+
+
 
 module.exports = router

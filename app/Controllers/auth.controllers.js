@@ -10,7 +10,6 @@ class AuthController {
   registerProcess = async (req, res, next) => {
     try {
       let payload = req.body
-
       let exists = await userService.getUserByEmail(payload.email)
       if (exists) {
         throw "User already registered"
@@ -129,6 +128,37 @@ class AuthController {
       msg: "Your profile data ",
       meta: null,
     })
+  }
+  updateProfile = async (req, res, next) => {
+    console.log('Back');
+    
+    try {
+      let data = req.
+      console.log('data ', data);
+      
+      let profileData = await userService.getUserById(req.id)
+      console.log(profileData);
+      
+      if (req.file) {
+        data.image = req.file.filename
+      } else {
+        data.image = profileData.image
+      }
+      await profileService.validateRequest(data)
+      let response = await userService.updateUserById(req.id, data)
+      res.json({
+        result: response,
+        msg: "Profile Updated Successfully",
+        status: true,
+        meta: null,
+      })
+    } catch (err) {
+      console.log("Profile Update errorr", err)
+      next({
+        status: 400,
+        msg: "Profile Update errorr" + err,
+      })
+    }
   }
 }
 

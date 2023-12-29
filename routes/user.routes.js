@@ -1,16 +1,29 @@
+
 const router = require("express").Router()
+const authController = require("../app/Controllers/auth.controllers")
+// const userController = require("../app/Controllers/user.controllers")
+const authCheck = require("../app/middleware/auth.middleware")
+const { isAdmin } = require("../app/middleware/rbac.middleware")
+const uploader = require("../app/middleware/uploader.middlerware")
 
-// const { addListener } = require('nodemon');
-const userController = require("../app/Controllers/user.controllers")
-
-router.route("/").get(userController.listUsers).post(userController.createUser)
+const makeDir = (req, res, next) => {
+  req.dirPath = "./public/uploads/profile"
+  next()
+}
+//frontend routes should be on top
+//web
+// router.get("/list", userController.ListForHomepage)
+//cms
+// router
+//   .route("/")
+//   .get(authCheck, isAdmin, userController.listAllUser)
+//   .post(authCheck, isAdmin, makeDir, uploader.single("image"), userController.createUser
+//   )
 
 router
   .route("/:id")
-  .get(userController.getUserDetail)
-  .put(userController.upadteUser)
-  .delete(userController.deleteUser)
-
-// router.delete('/:id', userController.deleteUser);
+  // .get(authCheck, isAdmin, userController.getUserById)
+  .put(authCheck, isAdmin, makeDir, uploader.single("image"), authController.updateProfile)
+  // .delete(authCheck, isAdmin, userController.deleteUserById)
 
 module.exports = router

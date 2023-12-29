@@ -1,4 +1,4 @@
-const { default: slugify } = require("slugify")
+// const { default: slugify } = require("slugify")
 const { deleteImage } = require("../../config/functions")
 const BookModel = require("../model/book.model")
 const bookService = require("../services/book.service")
@@ -55,11 +55,11 @@ class BookController {
       }
       await bookService.validateRequest(data)
 
-      data.slug = slugify(data.title, {
-        replacement: "-",
-        lower: true,
-        trim: true,
-      })
+      // data.slug = slugify(data.title, {
+      //   replacement: "-",
+      //   lower: true,
+      //   trim: true,
+      // })
 
       let response = await bookService.storeBook(data)
 
@@ -87,11 +87,11 @@ class BookController {
         data.image = bookData.image
       }
       await bookService.validateRequest(data)
-      data.slug = slugify(data.title, {
-        replacement: "-",
-        lower: true,
-        trim: true,
-      })
+      // data.slug = slugify(data.title, {
+      //   replacement: "-",
+      //   lower: true,
+      //   trim: true,
+      // })
       let response = await bookService.updateBook(req.params.id, data)
       res.json({
         result: response,
