@@ -1,4 +1,4 @@
-const  userService = require("../services/user.service")
+const userService = require("../services/user.service")
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 const AppConstants = require("../../config/constants")
@@ -122,7 +122,7 @@ class AuthController {
   }
 
   LoggedInProfile = (req, res, next) => {
-   return res.json({
+    return res.json({
       result: req.authUser,
       status: true,
       msg: "Your profile data ",
@@ -130,22 +130,28 @@ class AuthController {
     })
   }
   updateProfile = async (req, res, next) => {
-    console.log('Back');
-    
+    // console.log(req);
     try {
-      let data = req.
-      console.log('data ', data);
-      
-      let profileData = await userService.getUserById(req.id)
-      console.log(profileData);
-      
+      let data = req.body;
+      let UserId = req.params.id;
+
+      delete data.id;
+
+      let profileData = await userService.getUserById(UserId);
+     
+      if (profileData) {
+        // console.log('PPPPPP', profileData, profileData._id);
+      } else {
+        console.log('User data not found');
+      }
       if (req.file) {
+        // console.log('ok here', req.file);
         data.image = req.file.filename
       } else {
         data.image = profileData.image
       }
-      await profileService.validateRequest(data)
-      let response = await userService.updateUserById(req.id, data)
+      await userService.validateUpdateUser(data)
+      let response = await userService.updateUserById(profileData.id, data)
       res.json({
         result: response,
         msg: "Profile Updated Successfully",

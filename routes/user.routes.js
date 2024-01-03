@@ -22,8 +22,8 @@ const makeDir = (req, res, next) => {
 
 router
   .route("/:id")
-  // .get(authCheck, isAdmin, userController.getUserById)
-  .put(authCheck, isAdmin, makeDir, uploader.single("image"), authController.updateProfile)
-  // .delete(authCheck, isAdmin, userController.deleteUserById)
+  .put(authCheck, isAdmin, makeDir, uploader.single('image'), authController.updateProfile)
+// .get(authCheck, isAdmin, userController.getUserById)
+// .delete(authCheck, isAdmin, userController.deleteUserById)
 
 module.exports = router

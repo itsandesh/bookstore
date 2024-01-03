@@ -52,6 +52,48 @@ class UserService extends MongoDBService {
         }
     }
 
+    validateUpdateUser = async (data) => {
+
+        try {
+            if ((Object.keys(data)).length == 0) {
+                throw "Empty payload"
+            } else {
+                let userSchema = Joi.object({
+                    name: Joi.string()
+                        .min(3)
+                        .max(50)
+                        .required(),
+
+                    email: Joi.string()
+                        .email({ minDomainSegments: 2 })
+                        .required(),
+
+                    address: Joi.string(),
+
+                    // role: Joi.string().allow("admin", "suppliar", "customer").default('customer'),
+
+                    status: Joi.string()
+                        .allow("active", "inactive")
+                        .default('inactive'),
+
+                    phone: Joi.string()
+                        .min(10),
+
+                    image: Joi.string().empty()
+                })
+                let response = await userSchema.validateAsync(data)
+                return response;
+
+            }
+        } catch (err) {
+            console.log(err);
+            if (err?.details) {
+                throw err?.details?.[0].message;
+            }
+            throw err;
+        }
+    }
+
     registerUser = async (data) => {
         try {
 
@@ -77,22 +119,45 @@ class UserService extends MongoDBService {
             throw "getUserByEmail", +err;
         }
     }
+    // getUserById = async (UserId) => {
+
+    //     try {
+    //         let UserDetail = await UserModel.findById(UserId, { password: 0 }); //first parameter is ID and second parameter is Projection
+    //         console.log('userdetail',UserDetail);
+
+    //         return UserDetail;
+
+    //     } catch (err) {
+    //         throw "UserDetailById", err;
+    //     }
+    // }
+
+
     getUserById = async (UserId) => {
         try {
-            let UserDetail = await UserModel.findById(UserId, {password:0 }); //first parameter is ID and second parameter is Projection
-            return UserDetail;
+            let UserDetail = await UserModel.findById(UserId, { password: 0 });
+            if (!UserDetail) {
+                console.log('User not found');
+                return null;  // or throw an error if you prefer
+            }
 
+            // console.log('userdetail', UserDetail);
+            return UserDetail;
         } catch (err) {
-            throw "UserDetailById", err;
+            console.error('Error fetching user by ID:', err.message);
+            throw new Error(`Error fetching user detail by ID: ${err.message}`);
         }
     }
-    updateUserById =async(id, data )=>{
-        try{
-            let response = await UserModel.findByIdAndUpdate(id,{$set:data})
-            return response
 
-        }catch(err){
-            throw "update User error :"+ err;
+    updateUserById = async (id, data) => {
+        console.log('id', id, data);
+
+        try {
+            let response = await UserModel.findByIdAndUpdate(id, { $set: data })
+            console.log('RESP',response);
+            return response
+        } catch (err) {
+            throw "update User error :" + err;
         }
     }
 
