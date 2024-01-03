@@ -130,7 +130,6 @@ class AuthController {
     })
   }
   updateProfile = async (req, res, next) => {
-    // console.log(req);
     try {
       let data = req.body;
       let UserId = req.params.id;
@@ -140,7 +139,7 @@ class AuthController {
       let profileData = await userService.getUserById(UserId);
      
       if (profileData) {
-        // console.log('PPPPPP', profileData, profileData._id);
+        console.log('PPPPPP', profileData);
       } else {
         console.log('User data not found');
       }

@@ -7,7 +7,7 @@ const { isAdmin } = require("../app/middleware/rbac.middleware")
 const uploader = require("../app/middleware/uploader.middlerware")
 
 const makeDir = (req, res, next) => {
-  req.dirPath = "./public/uploads/profile"
+  req.dirPath = "./public/uploads/user"
   next()
 }
 //frontend routes should be on top
@@ -22,7 +22,7 @@ const makeDir = (req, res, next) => {
 
 router
   .route("/:id")
-  .put(authCheck, isAdmin, makeDir, uploader.single('image'), authController.updateProfile)
+  .put(authCheck, isAdmin, makeDir, uploader.single("image"), authController.updateProfile)
 // .get(authCheck, isAdmin, userController.getUserById)
 // .delete(authCheck, isAdmin, userController.deleteUserById)
 

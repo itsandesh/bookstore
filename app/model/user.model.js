@@ -34,6 +34,7 @@ const UserSchemaDef = new mongoose.Schema(
     },
     image: {
       type: String,
+      require: true,
     },
     createdBy: {
       type: mongoose.Types.ObjectId,

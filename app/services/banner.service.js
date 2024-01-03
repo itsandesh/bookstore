@@ -57,6 +57,8 @@ class BannerService {
     }
   }
   updateBanner = async (id, data) => {
+    console.log('Banner ID AND DATA ', id, data);
+
     try {
       let response = await BannerModel.findByIdAndUpdate(id, {
         $set: data,
