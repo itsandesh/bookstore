@@ -1,6 +1,6 @@
 const mongoose = require("mongoose")
 const CommonSchema = require("./common-schema")
-const CategorySchemaDef = new mongoose.Schema(
+const CategorySchema = new mongoose.Schema(
   {
     title: {
       type: String,
@@ -22,18 +22,22 @@ const CategorySchemaDef = new mongoose.Schema(
 
     status: CommonSchema.status,
 
-    createdBy: {
-      type: mongoose.Types.ObjectId,
-      ref: "User",
-      require: false,
-    },
+    createdBy: CommonSchema.createdBy,
+
+    featured: {
+      type: Boolean,
+      deafault: false
+    }
+
   },
+
   {
     autoIndex: true,
     timestamps: true,
+    autoCreate: true
   }
 )
 
-const CategoryModel = mongoose.model("Category", CategorySchemaDef)
+const CategoryModel = mongoose.model("bookCat", CategorySchema)
 
 module.exports = CategoryModel

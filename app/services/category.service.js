@@ -11,7 +11,11 @@ class CategoryService {
 
         status: Joi.string().allow("active", "inactive").default("inactive"),
 
+        featured: Joi.boolean().default(false),
+
         image: Joi.string().empty(),
+
+
       })
       let validate = categorySchema.validateAsync(data)
       return validate

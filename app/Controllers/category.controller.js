@@ -53,9 +53,11 @@ class CategoryController {
       if (req.file) {
         data.image = req.file.filename
       }
-      await categoryService.validateRequest(data)
-
+      console.log('data', { data });
       data.parent = data.parent !== null && data.parent !== "" ? data.parent : null;
+      data.featured = data.featured == 1 || data.featured == "true" ? true : false
+      console.log('daata', { data });
+      await categoryService.validateRequest(data)
 
       data.slug = slugify(data.title, {
         replacement: "-",
@@ -90,8 +92,10 @@ class CategoryController {
       } else {
         data.image = categoryData.image
       }
+      console.log('data', { data });
       data.parent = data.parent !== null && data.parent !== "" ? data.parent : null;
-
+      data.featured = data.featured == 1 || data.featured == 'true' ? true : false
+      console.log('data', { data });
       await categoryService.validateRequest(data)
       data.slug = slugify(data.title, {
         replacement: "-",
