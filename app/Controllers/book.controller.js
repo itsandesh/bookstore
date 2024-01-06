@@ -144,9 +144,7 @@ class BookController {
   }
   getBookById = async (req, res, next) => {
     try {
-      let response = await bookService.getBookById(req.params.id)
-      console.log("Reeesponse",response)
-      
+      let response = await bookService.getBookById(req.params.id)      
       res.json({
         result: response,
         msg: "Book detail",

@@ -5,7 +5,7 @@ const { isAdmin } = require("../app/middleware/rbac.middleware")
 const uploader = require("../app/middleware/uploader.middlerware")
 
 const makeDir = (req, res, next) => {
-  req.dirPath = "./public/uploads/category"
+  req.dirPath = "./public/uploads/bookCat"
   next()
 }
 //frontend routes should be on top
@@ -34,5 +34,5 @@ router
     categoryController.updateCategory
   )
   .delete(authCheck, isAdmin, categoryController.deleteCategoryById)
-
+  .get(authCheck, isAdmin, categoryController.getCategoryById)
 module.exports = router

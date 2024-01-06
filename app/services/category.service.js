@@ -7,6 +7,8 @@ class CategoryService {
       let categorySchema = Joi.object({
         title: Joi.string().required(),
 
+        parent: Joi.string().allow(null, ''),
+
         status: Joi.string().allow("active", "inactive").default("inactive"),
 
         image: Joi.string().empty(),
@@ -26,6 +28,7 @@ class CategoryService {
     try {
       let skip = config.page * config.perPage
       let data = await CategoryModel.find()
+        .populate("parent")
         .sort({ _id: "desc" })
         .skip(skip)
         .limit(config.perPage)
@@ -39,6 +42,7 @@ class CategoryService {
       let data = await CategoryModel.find({
         status: "active",
       })
+        .populate("parent")
         .sort({ _id: "desc" })
         .limit(10)
       return data
@@ -66,7 +70,7 @@ class CategoryService {
   }
   getCategoryById = async id => {
     try {
-      let response = await CategoryModel.findById(id)
+      let response = await CategoryModel.findById(id).populate("parent")
       return response
     } catch (err) {
       throw err

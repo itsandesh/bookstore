@@ -13,7 +13,7 @@ class CategoryController {
         perPage: perPage,
       })
       let meta = {
-        totalCount: await categoryService.getCount(),       
+        totalCount: await categoryService.getCount(),
         perPage: Number(perPage),
         currentPage: Number(currentPage),
       }
@@ -55,11 +55,15 @@ class CategoryController {
       }
       await categoryService.validateRequest(data)
 
+      data.parent = data.parent !== null && data.parent !== "" ? data.parent : null;
+
       data.slug = slugify(data.title, {
         replacement: "-",
         lower: true,
         trim: true,
       })
+
+      data.createdBy = req.authUser._id;
 
       let response = await categoryService.storeCategory(data)
 
@@ -86,6 +90,8 @@ class CategoryController {
       } else {
         data.image = categoryData.image
       }
+      data.parent = data.parent !== null && data.parent !== "" ? data.parent : null;
+
       await categoryService.validateRequest(data)
       data.slug = slugify(data.title, {
         replacement: "-",
@@ -124,7 +130,6 @@ class CategoryController {
             response.image
           )
         }
-        console.log(response)
         res.json({
           result: response,
           msg: "Category Deleted Successfully",
@@ -139,6 +144,23 @@ class CategoryController {
       next({
         status: 400,
         msg: "Category Deletion errorr " + err,
+      })
+    }
+  }
+  getCategoryById = async (req, res, next) => {
+    try {
+      let response = await categoryService.getCategoryById(req.params.id)
+      res.json({
+        result: response,
+        msg: "Book Category detail",
+        status: true,
+        meta: null,
+      })
+    } catch (err) {
+      console.log(err)
+      next({
+        status: 400,
+        msg: "BookCatGetErr" + err,
       })
     }
   }

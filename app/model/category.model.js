@@ -1,4 +1,5 @@
 const mongoose = require("mongoose")
+const CommonSchema = require("./common-schema")
 const CategorySchemaDef = new mongoose.Schema(
   {
     title: {
@@ -13,11 +14,14 @@ const CategorySchemaDef = new mongoose.Schema(
       type: String,
       unique: true,
     },
-    status: {
-      type: String,
-      enum: ["active", "inactive"],
-      default: "incative",
+    parent: {
+      type: mongoose.Types.ObjectId,
+      ref: "bookCat",
+      default: null
     },
+
+    status: CommonSchema.status,
+
     createdBy: {
       type: mongoose.Types.ObjectId,
       ref: "User",
