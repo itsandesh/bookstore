@@ -11,6 +11,7 @@ const makeDir = (req, res, next) => {
 //frontend routes should be on top
 //web
 router.get("/list", categoryController.ListForHomepage)
+router.get("/featured", categoryController.ListActiveFeatured)
 //cms
 router
   .route("/")

@@ -48,7 +48,19 @@ class CategoryService {
       })
         .populate("parent")
         .sort({ _id: "desc" })
-        .limit(10)
+      return data
+    } catch (err) {
+      throw err
+    }
+  }
+  getAllFeaturedCategory = async () => {
+    try {
+      let data = await CategoryModel.find({
+        featured: true,
+        status:"active"
+      })
+        .populate("parent")
+        .sort({ _id: "desc" })
       return data
     } catch (err) {
       throw err

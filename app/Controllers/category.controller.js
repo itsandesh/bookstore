@@ -47,6 +47,22 @@ class CategoryController {
       })
     }
   }
+  ListActiveFeatured = async (req, res, next) => {
+    try {
+      let response = await categoryService.getAllFeaturedCategory()
+      res.json({
+        result: response,
+        msgg: "Featured Category list successfully",
+        status: true,
+        meta: null,
+      })
+    } catch (err) {
+      next({
+        status: 400,
+        msg: "list error" + err,
+      })
+    }
+  }
   createCategory = async (req, res, next) => {
     try {
       let data = req.body
@@ -93,7 +109,7 @@ class CategoryController {
         data.image = categoryData.image
       }
       console.log('data', { data });
-      data.parent = data.parent !== null && data.parent !== "" ? data.parent : null;
+      data.parent = data.parent !== null && data.parent !== "" && data.parent != "undefined" ? data.parent : null;
       data.featured = data.featured == 1 || data.featured == 'true' ? true : false
       console.log('data', { data });
       await categoryService.validateRequest(data)
