@@ -20,9 +20,9 @@ router.post("/login", authController.loginProcess)
 
 router.get("/my-profile", authCheck, authController.LoggedInProfile)
 
-router.put("/change-password", authCheck, authController.changePasswordProcess)
+router.put("/edit-password/", authCheck, authController.changePasswordProcess)
 
-router.put("/edit-profile/", authCheck, authController.updateProfile)
+
 
 
 

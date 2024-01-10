@@ -86,8 +86,8 @@ class AuthController {
   }
   changePasswordProcess = async (req, res, next) => {
     try {
-      let payload = req.body
-      let loggedInUser = req.authUser
+      let payload = req.body            
+      let loggedInUser = req.authUser      
       let pattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/
       let toBeChanged = await userService.getUserByEmail(payload.email)
       if (!toBeChanged) {
@@ -133,18 +133,9 @@ class AuthController {
     try {
       let data = req.body;
       let UserId = req.params.id;
-
       delete data.id;
-
       let profileData = await userService.getUserById(UserId);
-     
-      if (profileData) {
-        console.log('PPPPPP', profileData);
-      } else {
-        console.log('User data not found');
-      }
       if (req.file) {
-        // console.log('ok here', req.file);
         data.image = req.file.filename
       } else {
         data.image = profileData.image
