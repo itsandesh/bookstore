@@ -22,8 +22,6 @@ class AuthController {
 
         validatedData.password = await bcrypt.hash(validatedData.password, 10)
 
-        console.log("I am in auth ")
-
         //store data
 
         let response = await userService.registerUser(validatedData)
@@ -86,10 +84,14 @@ class AuthController {
   }
   changePasswordProcess = async (req, res, next) => {
     try {
-      let payload = req.body            
-      let loggedInUser = req.authUser      
+      let payload = req.body
+      let loggedInUser = req.authUser
       let pattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/
       let toBeChanged = await userService.getUserByEmail(payload.email)
+      const isOldPasswordValid = await bcrypt.compare(
+        payload.oldPassword,
+        toBeChanged.password
+      );
       if (!toBeChanged) {
         throw "User Does Not exist "
       } else if (!toBeChanged._id.equals(loggedInUser._id)) {
@@ -97,7 +99,9 @@ class AuthController {
           status: 403,
           msg: " you do not have previllage to change the password ",
         })
-      } else if (!pattern.test(payload.password)) {
+      } else if (!isOldPasswordValid) {
+        throw "Old password is incorrect";
+      }else if (!pattern.test(payload.password)) {
         throw "Password must be of 8 characters with at least a Captial letter, a Number , a small letter"
       } else if (payload.password !== payload.confirmPassword) {
         throw "Password and confirm password does not match "
@@ -122,6 +126,7 @@ class AuthController {
   }
 
   LoggedInProfile = (req, res, next) => {
+
     return res.json({
       result: req.authUser,
       status: true,

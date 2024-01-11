@@ -86,7 +86,6 @@ class UserService extends MongoDBService {
 
             }
         } catch (err) {
-            console.log(err);
             if (err?.details) {
                 throw err?.details?.[0].message;
             }
@@ -140,26 +139,36 @@ class UserService extends MongoDBService {
                 console.log('User not found');
                 return null;  // or throw an error if you prefer
             }
-
-            // console.log('userdetail', UserDetail);
             return UserDetail;
         } catch (err) {
             console.error('Error fetching user by ID:', err.message);
             throw new Error(`Error fetching user detail by ID: ${err.message}`);
         }
     }
-
+    getUserPassById = async (UserId) => {
+        try {
+            let UserPassDetail = await UserModel.findById(UserId);
+            console.log(UserPassDetail);
+            if (!UserPassDetail) {
+                console.log('User not found');
+                return null;
+            }
+            return UserDetail;
+        } catch (err) {
+            console.error('Error fetching user by ID:', err.message);
+            throw new Error(`Error fetching user detail by ID: ${err.message}`);
+        }
+    }
     updateUserById = async (id, data) => {
-        console.log('id', id, data);
-
         try {
             let response = await UserModel.findByIdAndUpdate(id, { $set: data })
-            console.log('RESP',response);
             return response
         } catch (err) {
             throw "update User error :" + err;
         }
     }
+
+
 
 }
 

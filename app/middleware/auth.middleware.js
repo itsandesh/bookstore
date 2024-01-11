@@ -33,7 +33,7 @@ const authCheck = async (req, res, next) => {
 
     // user id
     let user = await userSvc.getUserById(data.userId)
-
+    
     if (user) {
       req.authUser = user;
       req.tokenData = data;

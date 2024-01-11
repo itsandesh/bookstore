@@ -23,7 +23,6 @@ const makeDir = (req, res, next) => {
 router
   .route("/:id")
   .put(authCheck, isAdmin, makeDir, uploader.single("image"), authController.updateProfile)
-  // .put(authCheck, isAdmin,  authController.changePasswordProcess)
 // .get(authCheck, isAdmin, userController.getUserById)
 // .delete(authCheck, isAdmin, userController.deleteUserById)
 
